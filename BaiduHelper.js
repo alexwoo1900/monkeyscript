@@ -20,6 +20,7 @@
 
     var observer = new MutationObserver(function(records){
         addGoogleSearch();
+        blockAD();
     });
 
     document.onreadystatechange = function(){
@@ -99,10 +100,31 @@
             }
         }
     }
+
+    function blockAD() {
+        var lContent = document.getElementById("content_left");
+        var lContentNodes = lContent.childNodes;
+        var lContentLen = lContentNodes.length;
+        for (var i = lContentLen - 1; i >= 0; --i) {
+            if(lContentNodes[i].classList !== undefined) {
+                if ((!lContentNodes[i].classList.contains("result") || lContentNodes[i].id === "1") && !lContentNodes[i].classList.contains("result-op")) {
+                    lContentNodes[i].remove();
+                }
+            }
+        }
+
+        var rContentADs = document.getElementsByClassName("ad-block");
+        var rContentADsLen = rContentADs.length;
+        for (var j = rContentADsLen - 1; j >= 0; --j) {
+            rContentADs[j].remove();
+        }
+    }
+
     setTimeout(()=>{
         var searchResultArea = document.getElementById("wrapper_wrapper");
         if (searchResultArea.innerHTML != "") {
             addGoogleSearch();
+            blockAD();
         }
     },2000);
 })();
